@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Zehntinel\LaravelLago\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelLagoCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-lago';
 
     public $description = 'My command';
 
