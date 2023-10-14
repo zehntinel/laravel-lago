@@ -2,24 +2,29 @@
 
 namespace Zehntinel\LaravelLago;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Zehntinel\LaravelLago\Commands\LaravelLagoCommand;
+use Carbon\Laravel\ServiceProvider;
+use Zehntinel\LaravelLago\Contracts\LagoServiceContract;
 
-class LaravelLagoServiceProvider extends PackageServiceProvider
+class LaravelLagoServiceProvider extends ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    public function boot(): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package
-            ->name('laravel-lago')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-lago_table')
-            ->hasCommand(LaravelLagoCommand::class);
+        // Setup config publishing
+        $this->publishes([
+            __DIR__.'/../config/lago.php' => config_path('lago.php'),
+        ]);
+    }
+
+    public function register(): void
+    {
+        // Register config.
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/lago.php',
+            'lago'
+        );
+
+        $this->app->singleton(LagoServiceContract::class, function ($app) {
+            return new LagoService($app->make('config')['lago']);
+        });
     }
 }
