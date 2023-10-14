@@ -2,9 +2,9 @@
 
 namespace Zehntinel\LaravelLago;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Zehntinel\LaravelLago\Contracts\LagoServiceContract;
-use GuzzleHttp\Client;
 use Zehntinel\LaravelLago\DataTransferObjects\LagoPlan;
 
 class LagoService implements LagoServiceContract
@@ -19,6 +19,7 @@ class LagoService implements LagoServiceContract
 
     /**
      * @return mixed
+     *
      * @throws GuzzleException
      */
     public function plans(): array
@@ -26,11 +27,11 @@ class LagoService implements LagoServiceContract
         $plans = [];
         $response = $this->client->request(
             method: 'GET',
-            uri: $this->getBaseUrl() . '/api/v1/plans',
-            options:[
+            uri: $this->getBaseUrl().'/api/v1/plans',
+            options: [
                 'headers' => [
                     'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ' . $this->getApiKey(),
+                    'Authorization' => 'Bearer '.$this->getApiKey(),
                 ],
             ]
         );
@@ -58,7 +59,7 @@ class LagoService implements LagoServiceContract
         return sprintf('%s', $this->config['base_url'] ?? '');
     }
 
-    protected function getApiKey() :string
+    protected function getApiKey(): string
     {
         return sprintf('%s', $this->config['api_key'] ?? '');
     }
